@@ -1,0 +1,32 @@
+/{
+	label_a: node_a {
+		compatible = "custom,cells-a";
+		#phandle-array-of-ref-cells = <2>;
+		dummy-value = <0xc0ffee>;
+	};
+
+	label_b: node_b {
+		compatible = "custom,cells-b";
+		#phandle-array-of-ref-cells = <1>;
+	};
+
+	node_refs{
+		compatible = "custom,props-phandles";
+
+		// path
+		path-by-path = &{/node_a};
+		path-by-label = &label_a;
+
+		// phandle
+		phandle-by-path = <&{/node_a}>;
+		phandle-by-label = <&label_a>;
+
+		// phanles without args
+		phandles = <&{/node_a} &label_b>;
+
+		// phandles array(with args)
+		phandle-array-of-refs = <&{/node_a} 1 2>, < &label_b 1>;
+	};
+
+	
+};

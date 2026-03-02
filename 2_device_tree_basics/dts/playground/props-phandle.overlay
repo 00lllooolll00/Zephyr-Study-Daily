@@ -1,0 +1,47 @@
+/ {
+	label_a: node_a {
+		// 在 Zephyr 中的应用层逻辑中，给下面这个赋值是
+		// 多余的；因为 Zephyr 引入了一个 yaml 的绑定文件
+		// 在这个绑定文件中就会把所有的属性列举出来，同时
+		// 就可以看出来属性数目。但是由于 Zephyr 的设备树
+		// 编译器是直接使用的 linux 的，用于语法检查，
+		// 所以还是要写上这个个数
+		#phandle-array-of-ref-cells = <2>;
+	};
+
+	label_b :node_b {
+		#phandle-array-of-ref-cells = <1>;	
+	};
+
+	node_refs {
+		// 路径：不会为 `node_a` 和 `node_b` 生成一个 phandle
+		path-by-path = &{/node_a};
+		path-by-label = &label_b;
+
+		// phandle 单纯引用一个，需要使用 `<>` 将值括起来
+		// 因为编译器会为 node_a node_b 生成一个独一无二的
+		// phandle 属性，为一个32位的十六进制数，所以本质
+		// 是一个整数，需要使用 `<>`
+		phandle-by-path = <&{/node_a}>;
+		phandle_by-label = <&label_b>;
+
+		// phandle 多个 phandle 组成的一个数组
+		phandles = <&{/node_a}, &{label_b}>;
+
+		// phandle-array 在数组的基础上还要加上参数
+		// 参数需要使用 bindings.yaml 文件指定
+		// 这里的 node_a 有两个参数，node_b 有一个参数
+		phandle-array-of-refs = <&{/node_a} 1 2 &label_b 3>;
+	};
+
+	node_refs_equivalent {
+		// 这个节点的这些属性和 `node_refs` 的属性等价
+		phandles = <&{/node_a}>, <&label_b>;
+	    phandle-array-of-refs = <&{/node_a} 1 2>, <&label_b 3>;	
+	};
+
+	node_with_phandles {
+		// 显式指定的一个 phandle	
+		phandle = <0x123456>;
+	};
+};

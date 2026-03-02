@@ -1,0 +1,13 @@
+/ {
+	label_a: node_a{
+		#phandle-array-of-ref-cells = <2>;
+	};
+
+	label_b: node_b{
+		#phandle-array-of-ref-cells = <1>;
+	};
+	
+	node_refs {
+		phandle-array-of-refs = <&label_a 2 1 &{/node_b} 3 2 4>;
+	};
+};

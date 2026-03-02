@@ -1,0 +1,63 @@
+/{
+
+	aliases{
+		// 这里的别名只能用于引用层的 .c/.h 文件，
+		// 在设备树文件内部是不允许作为某个节点的别名	
+		alias-by-label = &label_equivalent;               // 通过标签来进行别名
+		alias-by-path = &{/node_with_equivalent_arrays};  // 通过路径来别名
+		alias-as-string = "/node_with_equivalent_arrays"; // 使用字符串来别名
+	};
+
+	chosen{
+		// `chosen` 节点在 Zephyr 中是用来描述在应用层中被指定
+		// 的参数；约定成俗的都是直接通过路径来指定的引用
+		// 但是在语法上其实所有的方式都可以使用
+		chosen-by-label = &label_equivalent;               // 通过标签来选择
+		chosen-by-path = &{/node_with_equivalent_arrays};  // 通过路径来选择(约定俗成的方式)
+		chosen-as-string = "/node_with_equivalent_arrays"; // 用字符串来选择
+		// 语法上，`chosen` 也允许下列这种非法的数据类型
+		// 但是实际上没有任何作用
+		chosen-foo = "bar"; 
+		chosen-bar = <0xF00>;
+	};
+
+	node_with_props {
+		existent-boolen;                                   // 布尔类型
+		int = <1>;                                         // 整型 必须要用 `<>` 括起来
+		array = <1 2 3 4 5>;                               // 普通数组，也要用`<>`括起来
+		uint8-array = [AB 12 34];                          // uint8-array 数组成员都是十六进制
+		string = "zephyr";                                 // 字符串类型
+		string-array = "zephyr", "esp32s3", "n1netynie99"; // 字符串数组，直接用逗号将每个元素分开即可
+	};
+
+	label_equivalent: node_with_equivalent_arrays {
+		// 对于 `uint8-array` 来说，数组成员之间不需要有空格
+		// dts 编译器会自动每8位视作一个元素。所以这里的这个
+		// `uint8-array` 和上面的是等价的
+		uint8-array = [AB1234];		
+
+		// 普通的整数数组，也可以直接用逗号隔开每个元素，所
+		// 以这里的 `array` 和上面的等价
+		array = <1>, <2>, <3>, <4>, <5>;
+
+		int = <1>;
+	};
+};
+
+// 以下节点是在根节点之外，作用就是追加或者修改某个节点
+// 设备树中是允许通过一个节点的引用来对该节点的属性
+// 进行拓展、修改的
+
+// 如果想要使用 `alias` 中的别名来在设备树中引用一个节点
+// 是不可行的！
+// &alias-by-label{...};
+
+// 通过路径来访问节点，并且修改某一个属性 
+&{/node_with_equivalent_arrays} {
+	int = <2>;
+};
+
+// 通过标签栏来访问，并且拓展一个值
+&label_equivalent {
+	string = "extent";	
+};

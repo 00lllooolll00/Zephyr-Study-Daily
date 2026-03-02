@@ -1,0 +1,15 @@
+# 自定义我们的这个配置在 menuconfig 中显示的标题
+mainmenu "Custom Menu for N1netyNine99"
+
+# source 的作用就是引入Zephyr自身的顶层Kconfig
+source "Kconfig.zephyr"
+
+# 声明自定义菜单的分组
+menu "Application Options"
+config USER_FUNC
+	bool "Enable a user fun"
+	default n
+	help
+		Enables or disables user_fun function
+
+endmenu

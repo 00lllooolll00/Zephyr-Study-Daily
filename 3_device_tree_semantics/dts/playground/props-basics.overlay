@@ -1,0 +1,49 @@
+/{
+	aliases {
+		alias-by-label = &label_with_props;
+		alias-by-path = &{/node_with_props};
+		alias-as-string = "/node_with_props";
+	};
+
+	chosen{
+		chosen-by-label = &label_with_props;
+		chosen-by-path = &{/node_with_props};
+		chosen-as-string = "/node_with_props";
+	};
+	
+	label_with_props: node_with_props {
+		compatible = "custom,props-basics";
+
+		existent-boolean; 
+		int = <1>;
+
+		// 在设备树中，不仅仅只有属性和节点可以加上
+		// 标签；属性的值也可以加上标签：
+		// 这里的 `second_value` 和下面的
+		// `string_value` 都只是值的一个标签
+		// 而 `label_uint8_array` 是一个属性的标签
+		// 没有什么特殊语法意义。编译器会忽略掉
+		// 所有的不是用来引用节点的标签，所以下面
+		// 这几个标签都会被直接忽略，没什么用
+		array = <10 second_value: 11 12>;
+		label_uint8_array: uint8-array = [12 34 AB];
+		string = string_value:"foo bar baz";
+		string-array = "foo", "bar", "baz";
+		enum-int = <200>;
+		enum-string = "whatever";
+	};
+};
+
+&label_with_props{
+	// 在根节点之外的独立节点可以通过引用已有的节点
+	// 来进行修改；如果想要删除某一个属性，可以不去
+	// 直接对原节点修改，而是在根节点之外的引用该节
+	// 点，然后将想要删除的属性前面加上
+	//  `/delete-property/`
+	// 
+	// 注意：布尔值被删除之后是默认设置为 `false`
+	// 		 其他类型就是会直接被删除
+	
+	// /delete-property/ existent-boolean;
+	// /delete-property/ string;
+};
