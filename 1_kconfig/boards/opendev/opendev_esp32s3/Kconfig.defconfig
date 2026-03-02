@@ -1,8 +1,0 @@
-# Kconfig.defconfig
-
-if BOARD_OPENDEV_ESP32S3
-
-# 即使为空，或者后续在这里添加特定于板子的隐式 Kconfig 依赖
-# (你之前的 opendev_esp32s3_defconfig 文件里的配置会自动被系统加载，不需要写在这里)
-
-endif # BOARD_OPENDEV_ESP32S3
