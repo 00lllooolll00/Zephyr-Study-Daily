@@ -1,6 +1,0 @@
-board:
-  name: opendev_esp32s3
-  full_name: OpenDev ESP32-S3
-  vendor: opendev
-  socs:
-  - name: esp32s3
