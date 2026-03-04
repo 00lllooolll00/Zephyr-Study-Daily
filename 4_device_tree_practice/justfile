@@ -1,0 +1,23 @@
+alias bop := build-offical-pristine
+alias b := build
+alias f := flash
+alias m := menuconfig
+alias r := run
+alias c := clean
+
+build-offical-pristine:
+    west build -p always -b dnesp32s3b/esp32s3/procpu
+
+build:
+    west build
+
+flash:
+    west flash
+
+menuconfig:
+    TERM=linux MENUCONFIG_STYLE=monochrome west build -t menuconfig
+
+run: build flash
+
+clean:
+    ninja clean -C build

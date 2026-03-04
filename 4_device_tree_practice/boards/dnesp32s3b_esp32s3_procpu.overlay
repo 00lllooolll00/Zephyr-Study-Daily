@@ -1,0 +1,63 @@
+/{
+	chosen{
+		app-led = &led0;	
+		zephyr,console = &uart1;
+	};
+
+
+	leds{
+		compatible = "gpio-leds";
+
+		led0: led_0{
+			gpios = <&gpio0 1 GPIO_ACTIVE_LOW> ;
+			label = "Red led 0";
+		};
+	};
+};
+
+// 可以在引用层的 `overlay` 文件的根节点之外
+// 修改某一个已经存在的节点的既定属性。比如
+// 我将 `gpio0` 给设置为禁止，再尝试运行
+// `west build` 的时候就会编译错误，因为
+// `GPIO_DT_SPEC_GET(LED_NODE, gpios)`
+// 会找不到指定的设备
+// &gpio0{
+// 	status = "disabled";	
+// };
+
+// 在根节点外重新定义 `uart0`
+// tx -> IO7
+// rx -> IO5
+// &uart0_default{
+// 	group1 {
+// 		pinmux = <UART0_TX_GPIO7>;	
+// 		output-high;
+// 	};
+// 	group2 {
+// 		pinmux = <UART0_RX_GPIO5>;
+// 		bias-pull-up;	
+// 	};
+// };
+
+// 或者，也可以尝试使用 `uart1/2`
+// 不过需要将 `chosen` 节点中
+// `zephyr,console` 设置为 `&uart1`
+&uart1{
+	status = "okay";
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+};
+
+&pinctrl{
+	uart1_default: uart1_default{
+		group1 {
+			pinmux = <UART1_TX_GPIO6>;	
+			output-high;
+		};
+		group2 {
+			pinmux = <UART1_RX_GPIO4>;
+			bias-pull-up;	
+		};
+	};
+};
