@@ -85,7 +85,8 @@ just c
 ├── 0_base/                   # Base module
 ├── 1_kconfig/                # Kconfig configuration system
 ├── 2_device_tree_basics/     # Device tree basics
-└── 3_device_tree_semantics/  # Device tree semantics
+├── 3_device_tree_semantics/  # Device tree semantics
+└── 4_device_tree_practice/   # Device tree practice
 ```
 
 ### Module Descriptions
@@ -138,6 +139,18 @@ just c
 - Device driver and device tree association
 - Real peripheral configuration examples
 
+#### 4_device_tree_practice - Device Tree Practice
+**Learning Objectives**:
+- Device tree application in real projects
+- Peripheral driver and device tree integration
+- Custom device tree bindings
+- Practical case studies
+
+**Contents**:
+- Complete peripheral configuration examples
+- Device tree best practices
+- Common problem solutions
+
 ## Build Command Reference
 
 | Command | Full Command | Description |
@@ -157,6 +170,7 @@ Recommended learning sequence:
 2. **1_kconfig**: Master the configuration system and learn to create custom options
 3. **2_device_tree_basics**: Understand device tree fundamentals and learn to define hardware resources
 4. **3_device_tree_semantics**: Deep dive into advanced device tree features and implement complex configurations
+5. **4_device_tree_practice**: Master practical device tree applications through real-world case studies
 
 Each module can be built and run independently. It's recommended to fully understand the current module before moving to the next one.
 
